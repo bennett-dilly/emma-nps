@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emma NPS — June 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--det:#E24B4A;--pas:#EF9F27;--pro:#639922;--det-bg:#FCEBEB;--pas-bg:#FAEEDA;--pro-bg:#EAF3DE;--det-txt:#791F1F;--pas-txt:#633806;--pro-txt:#27500A;--blue:#2a78d6;--blue-bg:#E6F1FB;--blue-txt:#0C447C;--ink:#1a1a18;--ink2:#52514e;--ink3:#898781;--bd:rgba(0,0,0,0.08);--surface:#f7f6f3;--card:#fff;--r:8px}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--surface);color:var(--ink);font-size:14px;line-height:1.6}
+  .page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+  .hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--bd)}
+  .hd h1{font-size:19px;font-weight:600;letter-spacing:-.02em}
+  .hd p{font-size:12px;color:var(--ink3);margin-top:2px}
+  .hd-meta{text-align:right;font-size:12px;color:var(--ink3);line-height:1.9}
+
+  .exec{background:var(--det-bg);border-left:3px solid var(--det);border-radius:0;padding:12px 16px;margin-bottom:1.5rem;font-size:13px;color:var(--det-txt);line-height:1.65}
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+  .kpi{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:.875rem 1rem;text-align:center}
+  .kpi-l{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+  .kpi-v{font-size:26px;font-weight:600;letter-spacing:-.03em;line-height:1}
+  .kpi-s{font-size:11px;color:var(--ink3);margin-top:3px}
+  .charts{display:grid;grid-template-columns:3fr 2fr;gap:14px;margin-bottom:1.25rem}
+  .card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.125rem}
+  .ct{font-size:11px;font-weight:600;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.625rem}
+  .leg{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  .li{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--ink2)}
+  .ld{width:8px;height:8px;border-radius:2px}
+  .seg-r{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+  .seg-l{font-size:12px;width:70px;flex-shrink:0}
+  .seg-t{flex:1;height:16px;background:var(--surface);border-radius:3px;overflow:hidden}
+  .seg-f{height:100%;border-radius:3px}
+  .seg-v{font-size:12px;font-weight:600;width:32px;text-align:right;flex-shrink:0}
+  .wp{font-size:11px;padding:1px 6px;border-radius:20px;background:var(--pas-bg);color:var(--pas-txt)}
+  .themes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem}
+  .th{border:1px solid var(--bd);border-radius:var(--r);padding:.75rem .875rem}
+  .tn{font-size:12px;font-weight:600;margin-bottom:2px}
+  .tm{font-size:10px;color:var(--ink3);margin-bottom:5px}
+  .tq{font-size:11px;color:var(--ink2);font-style:italic;border-left:2px solid var(--bd);padding-left:7px;line-height:1.5}
+  .il{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:1.25rem}
+  .il li{font-size:12.5px;color:var(--ink2);padding-left:.875rem;position:relative;line-height:1.6}
+  .il li::before{content:"→";position:absolute;left:0;color:var(--ink3);font-size:11px;top:3px}
+  .il strong{color:var(--ink);font-weight:600}
+  .sec-t{font-size:11px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin:1.25rem 0 .625rem}
+  .fb{display:flex;gap:7px;margin-bottom:.75rem;flex-wrap:wrap}
+  .fb button{font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--bd);background:var(--card);color:var(--ink2);cursor:pointer;transition:all .12s}
+  .fb button:hover{border-color:var(--blue);color:var(--blue)}
+  .fb button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  table{width:100%;border-collapse:collapse;table-layout:fixed}
+  th{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;font-weight:600;text-align:left;padding:5px 8px;border-bottom:1px solid var(--bd)}
+  td{padding:6px 8px;border-bottom:1px solid var(--bd);vertical-align:top;font-size:11.5px;color:var(--ink2);overflow:hidden;text-overflow:ellipsis}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fafaf8}
+  .bd{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:10px;font-weight:600;color:#fff}
+  .pl{font-size:10px;padding:2px 6px;border-radius:20px;font-weight:500;white-space:nowrap}
+  .ft{text-align:center;font-size:10px;color:var(--ink3);margin-top:2rem;padding-top:1rem;border-top:1px solid var(--bd)}
+  @media(max-width:620px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}.themes{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hd">
+    <div>
+      <h1>Emma NPS — June 2026</h1>
+      <p>May 26–Jun 29 &nbsp;·&nbsp; Agency cohort &nbsp;·&nbsp; Appcues export</p>
+    </div>
+    <div class="hd-meta">
+      <div>87 respondents</div>
+      <div>40 verbatims (46%)</div>
+      <div>1 duplicate removed</div>
+    </div>
+  </div>
+
+
+  <div class="exec">
+    <strong>NPS +20</strong> from 87 agency respondents. The score is propped up by 30 perfect 10s — the <strong>29.9% detractor rate</strong> is the number that matters. Two fastest fixes: (1) editor regression complaints pointing to the new template builder, (2) a $500 support fee that's generating real resentment.
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-l">NPS score</div><div class="kpi-v" style="color:var(--blue)">+20</div><div class="kpi-s">exact 19.5 · N=87</div></div>
+    <div class="kpi"><div class="kpi-l">Promoters</div><div class="kpi-v" style="color:var(--pro)">49.4%</div><div class="kpi-s">43 respondents</div></div>
+    <div class="kpi"><div class="kpi-l">Passives</div><div class="kpi-v" style="color:var(--pas)">20.7%</div><div class="kpi-s">18 respondents</div></div>
+    <div class="kpi"><div class="kpi-l">Detractors</div><div class="kpi-v" style="color:var(--det)">29.9%</div><div class="kpi-s">26 respondents</div></div>
+  </div>
+
+  <div class="charts">
+    <div class="card">
+      <div class="ct">Score distribution</div>
+      <div class="leg">
+        <span class="li"><span class="ld" style="background:var(--det)"></span>Detractor 0–6</span>
+        <span class="li"><span class="ld" style="background:var(--pas)"></span>Passive 7–8</span>
+        <span class="li"><span class="ld" style="background:var(--pro)"></span>Promoter 9–10</span>
+      </div>
+      <div style="position:relative;height:170px"><canvas id="dc" role="img" aria-label="Score distribution. Bimodal: cluster at 0 (6 responses) and spike at 10 (30 responses).">0:6,1:3,2:2,3:1,4:2,5:6,6:6,7:5,8:13,9:13,10:30</canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">PPD breakdown</div>
+      <div style="position:relative;height:150px"><canvas id="pc" role="img" aria-label="Donut: 49.4% Promoter, 20.7% Passive, 29.9% Detractor."></canvas></div>
+      <div class="leg" style="justify-content:center;margin-top:8px">
+        <span class="li"><span class="ld" style="background:var(--pro)"></span>49.4%</span>
+        <span class="li"><span class="ld" style="background:var(--pas)"></span>20.7%</span>
+        <span class="li"><span class="ld" style="background:var(--det)"></span>29.9%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="ct">Segment NPS</div>
+    <div class="seg-r">
+      <span class="seg-l">Agency</span>
+      <div class="seg-t"><div class="seg-f" style="width:61%;background:var(--pro)"></div></div>
+      <span class="seg-v" style="color:var(--pro)">+21</span>
+      <span style="font-size:11px;color:var(--ink3);margin-left:6px">n=85</span>
+    </div>
+    <div class="seg-r">
+      <span class="seg-l">Org</span>
+      <div class="seg-t"><div class="seg-f" style="width:8%;background:var(--det)"></div></div>
+      <span class="seg-v" style="color:var(--det)">−50</span>
+      <span class="wp" style="margin-left:6px">⚠ n=2, not comparable</span>
+    </div>
+  </div>
+
+  <div class="sec-t">Verbatim themes</div>
+  <div class="themes">
+    <div class="th" style="border-top:2px solid var(--det)">
+      <div class="tn">Editor regression</div>
+      <div class="tm">Negative · 4 accounts · scores 0–5</div>
+      <div class="tq">"New template system is so much harder to use than legacy." — Cleveland Institute of Art (2)</div>
+    </div>
+    <div class="th" style="border-top:2px solid var(--det)">
+      <div class="tn">Support cost &amp; access</div>
+      <div class="tm">Negative · 3 accounts · scores 0–6</div>
+      <div class="tq">"Having to pay $500 for a 1-minute answer." — Beckett &amp; Beckett (6)</div>
+    </div>
+    <div class="th" style="border-top:2px solid var(--det)">
+      <div class="tn">Session &amp; UX friction</div>
+      <div class="tm">Negative · 3 accounts · scores 1–8</div>
+      <div class="tq">"Stop kicking me out while I'm literally actively typing." — YMCA Triangle (1)</div>
+    </div>
+    <div class="th" style="border-top:2px solid var(--pas)">
+      <div class="tn">Feature gaps</div>
+      <div class="tm">Mixed · 5 accounts · scores 5–10</div>
+      <div class="tq">"Must incorporate spell check." — Georgia Gwinnett (5)</div>
+    </div>
+    <div class="th" style="border-top:2px solid var(--pas)">
+      <div class="tn">Audience &amp; integrations</div>
+      <div class="tm">Mixed · 3 accounts · scores 7–9</div>
+      <div class="tq">"Offer SMS outside the US." — Vestis Services (7)</div>
+    </div>
+    <div class="th" style="border-top:2px solid var(--pro)">
+      <div class="tn">Product &amp; CS praise</div>
+      <div class="tm">Positive · 6 accounts · scores 9–10</div>
+      <div class="tq">"Emma keeps growing and becoming more robust through the years." — CSU Northridge (10)</div>
+    </div>
+  </div>
+
+  <div class="sec-t">Key insights</div>
+  <ul class="il">
+    <li><strong>NPS +20 (exact 19.5) — score is top-heavy.</strong> 30 perfect 10s carry the headline number. The 29.9% detractor rate is the real signal to track going forward.</li>
+    <li><strong>Editor regression is the clearest product fix.</strong> Multiple accounts independently name the new builder as harder than legacy. Rollback candidate worth a product conversation.</li>
+    <li><strong>The Little Gym - UK: two 0s, zero verbatim.</strong> Two contacts at the same account both scored 0 and said nothing — highest-priority silent churn risk in this dataset.</li>
+    <li><strong>Beckett &amp; Beckett's $500 support callout is a reputational risk.</strong> Named dollar amount + score 6. CSM should get ahead of this before renewal.</li>
+    <li><strong>43 promoters, almost no testimonials.</strong> 19 of 43 left no text. A targeted follow-up to 10-scorers for a reference or quote is easy upside.</li>
+  </ul>
+
+  <div class="sec-t">All verbatims</div>
+  <div class="fb">
+    <button class="on" data-f="all">All (25)</button>
+    <button data-f="Detractor">Detractors (10)</button>
+    <button data-f="Passive">Passives (5)</button>
+    <button data-f="Promoter">Promoters (10)</button>
+  </div>
+  <div class="card" style="padding:.75rem;overflow-x:auto">
+    <table id="vt"><colgroup><col style="width:26px"><col style="width:26%"><col style="width:auto"><col style="width:78px"></colgroup>
+      <thead><tr><th></th><th>Account</th><th>Comment</th><th>Category</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="sec-t">CSM priority list</div>
+  <div class="card" style="padding:.75rem;overflow-x:auto">
+    <table id="ct"><colgroup><col style="width:26px"><col style="width:20%"><col style="width:22%"><col style="width:auto"><col style="width:88px"></colgroup>
+      <thead><tr><th></th><th>Account</th><th>Email</th><th>Verbatim</th><th>Action</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="ft">Emma NPS · Appcues export · 87 respondents · May 26–Jun 29, 2026 · ⚠ Directional only (N&lt;30 per segment)</div>
+</div>
+
+<script>
+const D='#E24B4A',P='#EF9F27',R='#639922';
+const sc=s=>s<=6?D:s<=8?P:R;
+const cBg={Detractor:'#FCEBEB',Passive:'#FAEEDA',Promoter:'#EAF3DE'};
+const cTx={Detractor:'#791F1F',Passive:'#633806',Promoter:'#27500A'};
+const aB={'Immediate':'#FCEBEB','Urgent':'#FAEEDA','Follow-up':'#F1EFE8','Conversion target':'#E6F1FB'};
+const aT={'Immediate':'#791F1F','Urgent':'#633806','Follow-up':'#444441','Conversion target':'#0C447C'};
+
+new Chart(document.getElementById('dc'),{type:'bar',data:{labels:[0,1,2,3,4,5,6,7,8,9,10],datasets:[{data:[6,3,2,1,2,6,6,5,13,13,30],backgroundColor:[0,1,2,3,4,5,6,7,8,9,10].map(sc),borderRadius:3,borderSkipped:'bottom'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw} responses`}}},scales:{x:{grid:{display:false},ticks:{color:'#898781',font:{size:10}}},y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#898781',font:{size:10},stepSize:5},beginAtZero:true}}}});
+new Chart(document.getElementById('pc'),{type:'doughnut',data:{labels:['Promoter','Passive','Detractor'],datasets:[{data:[43,18,26],backgroundColor:[R,P,D],borderWidth:3,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw} (${Math.round(c.raw/87*100)}%)`}}}}});
+
+const VB=[
+  {score:0,cat:'Detractor',account:'Richard J Caron Foundation',text:'Menu overlap on content parts; random errors in Microsoft Edge'},
+  {score:0,cat:'Detractor',account:'Portland State University',text:'Layout process clunky; spam folder explanation impossible to understand without AI'},
+  {score:0,cat:'Detractor',account:'Ringling College of Art + Design',text:'Smart send should show when people are most likely to open'},
+  {score:0,cat:'Detractor',account:'Haverford College',text:'Needs proper onboarding and support resources'},
+  {score:1,cat:'Detractor',account:'YMCA of the Triangle',text:'Session timeout while typing; no group-last-used indicator; can\'t select-all on groups'},
+  {score:2,cat:'Detractor',account:'Cleveland Institute of Art',text:'New template system is much harder than legacy templates'},
+  {score:4,cat:'Detractor',account:'Stanford University HR Agency',text:'Email design needs to be made easier'},
+  {score:5,cat:'Detractor',account:'Georgia Gwinnett College',text:'Needs spell check, easier row management, split analytics per campaign, folder org'},
+  {score:5,cat:'Detractor',account:'Speedpro Canada',text:'Needs live help when needed'},
+  {score:6,cat:'Detractor',account:'Beckett & Beckett',text:'$500 for a 1-minute support answer with little added value'},
+  {score:7,cat:'Passive',account:'Oakland University',text:'Contact group update flow frustrating; need audience sharing across accounts'},
+  {score:7,cat:'Passive',account:'Vestis Services',text:'SMS communication needed for Canada and outside the US'},
+  {score:8,cat:'Passive',account:'University of Kansas',text:'Session timeout after 30 min is frustrating'},
+  {score:8,cat:'Passive',account:'University of Kansas',text:'Needs more customized control over user access'},
+  {score:8,cat:'Passive',account:'Halter Associates Realty',text:'Only for tech-savvy users; signup form design options too limited'},
+  {score:9,cat:'Promoter',account:'Fayetteville State University',text:'More integration options for audience list sync and accuracy'},
+  {score:10,cat:'Promoter',account:'Oakland Community College',text:'Customer service reliability and best practice guidance are valued'},
+  {score:10,cat:'Promoter',account:'People\'s Trust Insurance',text:'Better reporting for automated emails needed'},
+  {score:10,cat:'Promoter',account:'New England College of Optometry',text:'Allow editing of HTML within an email'},
+  {score:10,cat:'Promoter',account:'U of Mississippi Medical Center',text:'Keep being responsive'},
+  {score:10,cat:'Promoter',account:'California State University Northridge',text:'Emma keeps growing and becoming more robust through the years'},
+  {score:10,cat:'Promoter',account:'Cameron Ashley Building Products',text:'Enjoy the communication around the product'},
+  {score:10,cat:'Promoter',account:'St. Louis Community College',text:'Brand/default settings don\'t consistently flow to subaccounts; D&D editor usability could improve'},
+  {score:10,cat:'Promoter',account:'University of Michigan',text:'Saved blocks should be available at subaccount level, not just parent'},
+  {score:10,cat:'Promoter',account:"People's Trust Insurance",text:'idk'},
+];
+
+const CSM=[
+  {score:0,account:'The Little Gym - UK - HQ',email:'auiti.balestra@thelittlegym-uk.com',text:'—',action:'Immediate'},
+  {score:0,account:'The Little Gym - UK - HQ',email:'info@thelittlegym.co.uk',text:'—',action:'Immediate'},
+  {score:0,account:'Haverford College',email:'ghill@haverford.edu',text:'Proper onboarding + support resources',action:'Immediate'},
+  {score:0,account:'Richard J Caron Foundation',email:'lwolfe@caron.org',text:'Menu overlap + Edge errors',action:'Immediate'},
+  {score:0,account:'Portland State University',email:'rubyanna@pdx.edu',text:'Layout clunky; spam folder broken',action:'Immediate'},
+  {score:0,account:'Ringling College',email:'sborozan@c.ringling.edu',text:'Smart send needs rework',action:'Immediate'},
+  {score:1,account:'Rockhill Management',email:'tkrebs@rockhillmanagement.com',text:'—',action:'Urgent'},
+  {score:1,account:'YMCA of the Triangle',email:'alissa.clendenen@ymcatriangle.org',text:'Session timeout; groups UX',action:'Urgent'},
+  {score:1,account:'Baylor University',email:'Andrew_Maddox@baylor.edu',text:'—',action:'Urgent'},
+  {score:2,account:'Pennsylvania Dept of Health',email:'sgoodling@pa.gov',text:'—',action:'Urgent'},
+  {score:2,account:'Cleveland Institute of Art',email:'rsarian@cia.edu',text:'Template system regression',action:'Urgent'},
+  {score:4,account:'Stanford University HR',email:'powersa@stanford.edu',text:'Email design too hard',action:'Urgent'},
+  {score:5,account:'Carnegie Mellon University',email:'t-grm@andrew.cmu.edu',text:'—',action:'Follow-up'},
+  {score:5,account:'Georgia Gwinnett College',email:'lhill11@ggc.edu',text:'Spell check, analytics, folder org',action:'Follow-up'},
+  {score:6,account:'Beckett & Beckett',email:'sharonb@beckettadvisors.com',text:'$500 support fee is a dealbreaker',action:'Follow-up'},
+  {score:7,account:'Oakland University',email:'jasukait@oakland.edu',text:'Contact group UX; audience sharing',action:'Conversion target'},
+  {score:8,account:'University of Kansas',email:'jhummels@ku.edu',text:'Session timeout frustration',action:'Conversion target'},
+  {score:8,account:'University of Kansas',email:'d489d880@ku.edu',text:'User access control needed',action:'Conversion target'},
+];
+
+function rv(f){
+  const tb=document.querySelector('#vt tbody');
+  tb.innerHTML='';
+  VB.filter(r=>f==='all'||r.cat===f).forEach(r=>{
+    tb.innerHTML+=`<tr><td><div class="bd" style="background:${sc(r.score)}">${r.score}</div></td><td style="font-weight:600;color:#1a1a18">${r.account}</td><td style="font-style:italic">${r.text}</td><td><span class="pl" style="background:${cBg[r.cat]};color:${cTx[r.cat]}">${r.cat}</span></td></tr>`;
+  });
+}
+function rc(){
+  const tb=document.querySelector('#ct tbody');
+  CSM.forEach(r=>{
+    tb.innerHTML+=`<tr><td><div class="bd" style="background:${sc(r.score)}">${r.score}</div></td><td style="font-weight:600;color:#1a1a18">${r.account}</td><td><a href="mailto:${r.email}" style="color:#2a78d6;font-size:11px;text-decoration:none">${r.email}</a></td><td style="font-style:italic">${r.text}</td><td><span class="pl" style="background:${aB[r.action]};color:${aT[r.action]}">${r.action}</span></td></tr>`;
+  });
+}
+rv('all');rc();
+document.querySelectorAll('.fb button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.fb button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');rv(b.dataset.f);
+  });
+});
+</script>
+</body>
+</html>
